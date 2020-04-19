@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+
+\usepackage{rka-style}
+
+\usepackage[margin=0.875in]{geometry}
+\usepackage{accents, hyperref, chngcntr, tikz-cd}
+\usepackage[linesnumbered, noline]{algorithm2e}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear,round,citesep={;},aysep={,},yysep={;}}
+
+\hypersetup{ %
+    pdfborder=0 0 0,
+    pdfpagemode=UseNone,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+    pdfview=FitH}
+
+% TO DO NOTES
+\usepackage[colorinlistoftodos,bordercolor=orange,backgroundcolor=orange!20,linecolor=orange,textsize=scriptsize]{todonotes}
+\newcommand{\sra}[1]{\todo[inline]{{\textbf{Sara:} \emph{#1}}}}
+\newcommand{\ahmed}[1]{\todo[inline]{{\textbf{Ahmed:} \emph{#1}}}}
+
+% Preamble End
+% Document Start
+
+\begin{document}
+
+\title{Big Data Project Report}
+\author{Ahmed Essam, Ahmed Khaled, Sara Maher, Ibrahim Mahmoud}
+
+\maketitle
+
+\abstract{This report gives a time series analysis of historical Walmart sales data about more than three thousand different products sold across three different states in the United States. The data is part of the M5 forecasting competition \citep{Makridakis2020} and in addition to the time series analysis we also propose and describe a forecasting system and analyze its prediction capabilities.}
+
+\tableofcontents
+\clearpage
+
+\section{Introduction}
+\subsection{Problem Definition}
+TODO: add the problem definition here.
+
+\subsection{Dataset Description}
+The dataset is given by the \emph{M5 competition} available on Kaggle\footnote{\url{https://www.kaggle.com/c/m5-forecasting-accuracy}.} which is the current installment in the popular M competition series on forecasting \citep{Makridakis2020}. The dataset includes time series data of the sales of various Walmart store products divided hierarchically by the item level, department, product category, and geographical area. The dataset also includes explanatory variables such as price, promotions, day of the week, and special events (e.g. Valentine's Day, Orthodox Easter, and the Super Bowl, one of the largest sporting events in American Football). There are $3,075$ products classified in $3$ product categories and $7$ product departments. The products are sold across $10$ stores in $3$ different states (California, Texas, and Wisconsin). The total number of M5 series across the entire hierarchy is $42,840$.  More information on the data can be found \href{https://mk0mcompetitiont8ake.kinstacdn.com/wp-content/uploads/2020/02/M5-Competitors-Guide_Final-1.pdf}{on the M5 competition website} or on Kaggle.
+
+
+\section{Exploratory Data Analysis}
+
+\clearpage
+\section{Forecasting}
+
+
+\bibliography{main}
+
+\clearpage
+\section{Proposal}
+\ahmed{Will probably remove this later.}
+\subsection{Idea}
+We want to forecast the unit sales of different products sold by Walmart markets in the United States. More precisely, given hierarchical sales data from Walmart we will forecast daily sales for two subsequent 28-day time periods.
+
+\subsection{Planned Approach}
+We aim to use a mix of statistical features specific to time series data combined with neural networks. For deseasonalization we can use techniques like exponential smoothing or other statistical procedures on sliding windows. We hope to understand the seasonality patterns in the data first and then use a recurrent neural network to predict the trends.
+
+
+
+\end{document}

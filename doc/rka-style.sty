@@ -1,0 +1,137 @@
+% Macros package - Ahmed Khaled (rka)
+% January 2020.
+
+\ProvidesFile{rka-style}
+
+\usepackage{amsmath,amsthm,amssymb,mathtools,graphicx,enumitem,hyphenat,float,threeparttable}
+% \usepackage{mathabx}
+\usepackage{import, ifthen}
+
+\renewcommand{\|}{\parallel}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\newcommand\ec[2][]{\ensuremath{\mathbb{E}_{#1} \left[#2\right]}}
+\newcommand\ecn[2][]{\ec[#1]{\norm{#2}^2}}
+\newcommand\pr[1]{\ensuremath{\mathrm{Prob}\left(#1\right)}}
+\newcommand\ev[1]{\left \langle #1 \right \rangle}
+\newcommand\br[1]{\left ( #1 \right )}
+\newcommand\pbr[1]{\left \{ #1 \right \} }
+\newcommand\floor[1]{\left \lfloor #1 \right \rfloor}
+\newcommand{\dbtilde}[1]{\accentset{\approx}{#1}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Snp}{\mathbb{S}^{n}_{+}}
+\newcommand{\Sn}{\mathbb{S}^{n}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\beta}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\lc}{\mathop l}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\lub}{\mathrm{lub}}
+\newcommand{\g}{\mathrm{glb}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\newcommand{\seq}{\subseteq}
+\newcommand{\e}{\varepsilon}
+\newcommand{\la}{\lambda}
+\newcommand{\om}{\omega}
+\newcommand{\Om}{\Omega}
+\newcommand{\de}{\delta}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\es}{\emptyset}
+\newcommand{\mc}{\mathcal}
+\newcommand{\un}{\cup}
+\newcommand{\ic}{\cap}
+\newcommand{\gen}[1]{\ensuremath{\langle #1\rangle}}
+\newcommand{\spn}{\mathrm{span \ }}
+\newcommand{\dm}{\mathrm{dim \ }}
+\newcommand{\sgn}{\mathrm{ \ sign}}
+\newcommand{\Lm}{\mathcal{L}}
+\newcommand{\nll}{\mathrm{null}}
+\newcommand{\diag}{\mathrm{diag }}
+\newcommand{\row}{\mathrm{row}}
+\newcommand{\col}{\mathrm{col \ }}
+\newcommand{\rng}{\mathrm{range \ }}
+\newcommand{\dgr}{\mathrm{deg \ }}
+\newcommand{\dist}{\mathrm{dist}}
+\newcommand{\Prob}{\mathrm{Prob}}
+\newcommand{\Lim}{\lim\limits}
+\newcommand{\Sum}{\sum\limits}
+\newcommand{\Pt}{\|P\|}
+\newcommand{\dmn}{\mathrm{dom \ }}
+\newcommand{\Prod}{\prod\limits}
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+\newcommand{\Beta}{\beta}
+\newcommand{\Seq}{\mathrm{Seq }}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\sqn}[1]{{\left\lVert#1\right\rVert}^2}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand\m[1]{\begin{bmatrix}#1\end{bmatrix}} 
+\newcommand{\adj}{\mathrm{adj \ }}
+% \newcommand{\det}{\mathrm{det}}
+\newcommand{\rank}{\mathrm{rank \ }}
+\newcommand{\epi}{\mathrm{epi}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\prox}{\mathrm{prox}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\eqdef}{\overset{\text{def}}{=}}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\tvar}{\mathrm{TVar}}
+
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\usepackage{tcolorbox}
+\usepackage{pifont}
+\definecolor{mydarkgreen}{RGB}{39,130,67}
+\newcommand{\green}{\color{mydarkgreen}}
+\definecolor{mydarkred}{RGB}{192,47,25}
+\newcommand{\red}{\color{mydarkred}}
+\newcommand{\cmark}{\green\ding{51}}%
+\newcommand{\xmark}{\red\ding{55}}%
+
+\newcommand*\overbar[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxBtdp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{fact}{Fact}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{asm}{Assumption}
+\newtheorem{rmrk}{Remark}
+\newtheorem{lemma}{Lemma}
+
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{rques}[2]{\begin{center}    \fbox{\textbf{#1}}\end{center}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition} % definition numbers are dependent on theorem numbers
+\newtheorem{example}{Example} % same for example numbers
+
+\renewcommand{\qedsymbol}{$\blacksquare$}

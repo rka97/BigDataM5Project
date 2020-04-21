@@ -19,6 +19,8 @@
     urlcolor=blue,
     pdfview=FitH}
 
+\graphicspath{ {figures/} }
+
 % TO DO NOTES
 \usepackage[colorinlistoftodos,bordercolor=orange,backgroundcolor=orange!20,linecolor=orange,textsize=scriptsize]{todonotes}
 \newcommand{\sra}[1]{\todo[inline]{{\textbf{Sara:} \emph{#1}}}}
@@ -48,7 +50,98 @@ The dataset is given by the \emph{M5 competition} available on Kaggle\footnote{\
 
 
 \section{Exploratory Data Analysis}
-Draft of the analysis points we should cover, divided into 3 states: done, doing, and haven't started. Will be updated with more points, if we think of more, and the current state of each one. This is just a draft to do list and will surely be replaced in the final document.
+The data consists of 3 files: \begin{itemize}
+    \item \texttt{calender.csv}: containing the columns: \texttt{date}: the date in Year-Month-Day format, \texttt{wm\_yr\_wk}: code the week year from the dataset starting date, \texttt{weekday}: the weekday, \texttt{wday}: the weekday's number, starting from Saturday, \texttt{month}: the month, \texttt{year}: the year, \texttt{d}: the incremental ID of the day in the dataset, \texttt{event\_name\_1}: name of the event occurring in this day, if one exists, \texttt{event\_type\_1}: type of the event occurring in this day, if one exists, \texttt{event\_name\_2}: name of the second event occurring in that date,if one exists, \texttt{event\_type\_2}: type of the second event occurring in that date, if one exists, \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI}: 1 if SNAP\footnote{The Supplement Nutrition 
+    Assistance Program (SNAP) provides low income families and individuals with an Electronic Benefits Transfer 
+    debit card to purchase food products, this purchasing process is done monthly across 10 days} purchases are allowed on this date.
+    \item \texttt{sales\_train\_validation.csv}: containing the columns: \texttt{id}, with the id of the item codes as \textit{item\_id}\_\textit{store\_id}\_validation, \texttt{item\_id}: product ID, \texttt{dept\_id}: department ID,
+    \texttt{cat\_id}: category ID, \texttt{store\_id}: store ID, \texttt{state\_id}: state ID. and extra 1913 columns containing the total sold items each day from \texttt{d\_1} to \texttt{d\_1913}.
+\end{itemize}
+\subsection{Calender-Focused Analysis}
+The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated (counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting. With Religious events being the most frequent with 55 occurrence. Checking the calender data, no missing values were found.
+\subsection{Sales-Focused Analysis}
+Checking the calender data, no missing values were found. But the sales data is for 1913 days only,unlike the calender. The data contains 30490 rows and 1919 columns. The data contains 3 states; California (CA), Texas (TX) and Wisconsin (WI), with 4, 3, and 3 stores respectively. It also contains 4 categories; Hobbies, Household, Foods, with 2, 2, and 3 departments respectively.
+\subsubsection{Sales Exploration Figures}
+    \begin{figure}[H]
+	\centering
+        \includegraphics[width=0.65\textwidth]{{"Share of each state from the products"}}
+    \end{figure}
+    Here, it is clear that CA has the more products, this could just be a result of it having more stores.
+    \begin{figure}[H]
+    \centering
+        \includegraphics[width=0.65\textwidth]{{"Share of each store from the products"}}
+    \end{figure}
+    Investigating further, we find that this is just the case. Meaning that Walmart equalizes between these markets.
+    \begin{figure}[H]
+    \centering
+        \includegraphics[width=0.65\textwidth]{{"Share of each category from the products"}}
+    \end{figure}
+    \begin{figure}[H]
+    \centering
+        \includegraphics[width=0.65\textwidth]{{"Share of each department from the products"}}
+    \end{figure}
+        Walmart stocks up on products of department FOODS\_3 the most.
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each state"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each store"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each category"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each department"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per State for Each Category"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per category for each state"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per Store for Each Category"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per Category for Each Store"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per State for Each Department"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per Department for each State"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per Store for Each Department"}}
+    \end{figure}
+    The following 4 figures the total sales plot aren't the most informative, due to large variation between different departments, so they were normalized and stacked for better visualization:
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Percentage of Each Store Sales for Each Department"}}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Total Sales per Department for Each Store"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=0.65\textwidth]{{"Percentage of Each Department Sales for Each Store"}}
+    \end{figure}
+
+\par\noindent\rule{\linewidth}{2px}
+Draft of the analysis points we should cover, divided into 2 parts: doing, and haven't started, since the done ones can be seen above. Will be updated with more points, if we think of more, and the current state of each one. This is just a draft to do list and will surely be replaced in the final document.
 \begin{itemize}
     \item Haven't started: \begin{enumerate}
         \item total revenue in each store
@@ -62,20 +155,11 @@ Draft of the analysis points we should cover, divided into 3 states: done, doing
         \item total revenue in each year
     \end{enumerate}
     \item Doing:  \begin{enumerate}
-        \item total sold items in each store
-        \item total sold items in each state
-        \item total sold items of each category
-        \item total sold items of each category given the state
-        \item total sold items of each category given the store
         \item total sold items of each category given an event happens in that day
-        \item total sold items of each department
-        \item total sold items of each department given the state
-        \item total sold items of each department given the store
-        \item total sold items of each department given an event happens in that day
+       \item total sold items of each department given an event happens in that day
         \item total sold items in each weekday
         \item total sold items in each month
     \end{enumerate}
-    \item Done:
 \end{itemize}
 
 \clearpage

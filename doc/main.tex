@@ -76,12 +76,14 @@ The columns in each file are described in Tables~[??].
 
 
 \section{Exploratory Data Analysis}
-The data consists of 3 files: \begin{itemize}
+The data analyzed in this section are from 3 files: \begin{itemize}
     \item \texttt{calender.csv}: containing the columns: \texttt{date}: the date in Year-Month-Day format, \texttt{wm\_yr\_wk}: code the week year from the dataset starting date, \texttt{weekday}: the weekday, \texttt{wday}: the weekday's number, starting from Saturday, \texttt{month}: the month, \texttt{year}: the year, \texttt{d}: the incremental ID of the day in the dataset, \texttt{event\_name\_1}: name of the event occurring in this day, if one exists, \texttt{event\_type\_1}: type of the event occurring in this day, if one exists, \texttt{event\_name\_2}: name of the second event occurring in that date,if one exists, \texttt{event\_type\_2}: type of the second event occurring in that date, if one exists, \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI}: 1 if SNAP\footnote{The Supplement Nutrition 
     Assistance Program (SNAP) provides low income families and individuals with an Electronic Benefits Transfer 
     debit card to purchase food products, this purchasing process is done monthly across 10 days} purchases are allowed on this date.
     \item \texttt{sales\_train\_validation.csv}: containing the columns: \texttt{id}, with the id of the item codes as \textit{item\_id}\_\textit{store\_id}\_validation, \texttt{item\_id}: product ID, \texttt{dept\_id}: department ID,
     \texttt{cat\_id}: category ID, \texttt{store\_id}: store ID, \texttt{state\_id}: state ID. and extra 1913 columns containing the total sold items each day from \texttt{d\_1} to \texttt{d\_1913}.
+    \item \texttt{sell\_prices.csv}: containing the columns: \texttt{store\_id}: store ID, \texttt{item\_id}: has the product id coded as above, \texttt{wm\_yr\_wk}: code the week year from the dataset starting date, \texttt{sell\_price}: selling price of each product, for each day, in each store.
+    
 \end{itemize}
 \subsection{Calender-Focused Analysis}
 The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated (counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting. With Religious events being the most frequent with 55 occurrence. Checking the calender data, no missing values were found.
@@ -171,6 +173,14 @@ Checking the calender data, no missing values were found. But the sales data is 
     \end{figure}
     \begin{figure}[H]
         \centering
+            \includegraphics[width=\textwidth]{{"Time Series Decomposition"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Sales in different years"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
             \includegraphics[width=\textwidth]{{"2011 Q1"}}
     \end{figure}
     \begin{figure}[H]
@@ -185,14 +195,59 @@ Checking the calender data, no missing values were found. But the sales data is 
         \centering
             \includegraphics[width=\textwidth]{{"2011 Q4"}}
     \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Total Sales per month"}}
+    \end{figure}
+    March has the highest total sales, which is surprising as it comes $2_{nd}$, after February, according to the number on events happening in it.
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Total Sales per day in the month"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Total Sales for Each Event"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Total Sales for Each EventCategory"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Monthly sales in each state"}}
+    \end{figure}
+    So the absolute month with the maximum sales for each state:
+    \begin{itemize}
+        \item California: \date(August, 2015)
+        \item Texas: \date(August, 2013)
+        \item Wisconsin: \date( March, 2016)
+    \end{itemize}
+    Over the years, the month with the maximum sales in each state was the same as the one with the maximum total sales, March.
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Per Month sales in each state"}}
+    \end{figure}
 
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Monthly sales for each category"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Per Month sales for each category"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Monthly sales for each department"}}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{{"Per Month sales for each department"}}
+    \end{figure}
 \par\noindent\rule{\linewidth}{2px}
 Draft of the analysis points we should cover, divided into 2 parts: doing, and haven't started, since the done ones can be seen above. Will be updated with more points, if we think of more, and the current state of each one. This is just a draft to do list and will surely be replaced in the final document.
 \begin{itemize}
     \item Haven't started: \begin{enumerate}
-        \item total revenue in each store
-        \item total revenue in each state
-        \item total revenue of each category
         \item total revenue of each category given the state
         \item total revenue of each category given the store
         \item total revenue of each category given an event happens in that day
@@ -201,10 +256,10 @@ Draft of the analysis points we should cover, divided into 2 parts: doing, and h
         \item total revenue in each year
     \end{enumerate}
     \item Doing:  \begin{enumerate}
-        \item total sold items of each category given an event happens in that day
-       \item total sold items of each department given an event happens in that day
         \item total sold items in each weekday
-        \item total sold items in each month
+        \item total revenue in each store
+        \item total revenue in each state
+        \item total revenue of each category
     \end{enumerate}
 \end{itemize}
 
@@ -214,7 +269,7 @@ Draft of the analysis points we should cover, divided into 2 parts: doing, and h
 Interesting questions that our project should answer:
 \begin{enumerate}
     \item Which department is the most important by sales? Which department is the least important?
-    \item Which items are commonly bought together in each store? What about which items are bought together in each state?
+    \item Which items are commonly bought together in each store? What about which items are bought together in each state? \textcolor{red}{We can't answer this since we don't have individual shopping data.}
     \item Which feast days generate the most sales? Which feast days generate the least?
     \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold?
     \item Can we predict the item sales accurately?

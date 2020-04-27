@@ -71,7 +71,27 @@ The dataset is divided into four files, each of which is described in \Cref{tab:
     \end{tabular}
 \end{table}
 
-The columns in each file are described in Tables~[??].
+The columns in each file are described in \Cref{tab:calendar-desc}.
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[]
+    \centering
+    \caption{calendar.csv columns description. Note that SNAP stands for 
+    Supplemental Nutrition Assistance Program, a program to help provide food for low-income families in the United States of America.}
+    \label{tab:calendar-desc}
+    \begin{tabular}{@{}cc@{}}
+    \toprule
+    Column Name                                                       & Description                         \\ \midrule
+    Date                                                              & The full date as a string.          \\
+    wm_yr_wk                                                          & Week id.                            \\
+    \begin{tabular}[c]{@{}c@{}}weekday/wday\\ month/year\end{tabular} & Date split up.                      \\
+    event_name_1/2                                                    & Name of this event (if applicable). \\
+    event_type_1/2                                                    & Type of the event (if applicable).  \\
+    \begin{tabular}[c]{@{}c@{}}snap_CA\\ snap_TX\\ snap_WI\end{tabular} & \begin{tabular}[c]{@{}c@{}}Indicator of whether the stores allow\\ SNAP purchases.\end{tabular} \\ \bottomrule
+    \end{tabular}
+\end{table}
+
 
 
 \clearpage

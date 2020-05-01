@@ -1,8 +1,9 @@
 \documentclass[12pt]{article}
 
+\usepackage{subcaption}
 \usepackage{underscore}
 \usepackage{rka-style}
-
+\usepackage{multirow}
 \usepackage[margin=0.875in]{geometry}
 \usepackage{accents, hyperref, chngcntr, tikz-cd}
 \usepackage[linesnumbered, noline]{algorithm2e}
@@ -22,6 +23,7 @@
 
 \graphicspath{ {figures/} }
 \usepackage{cleveref,booktabs}
+\usepackage[parfill]{parskip}
 
 % TO DO NOTES
 \usepackage[colorinlistoftodos,bordercolor=orange,backgroundcolor=orange!20,linecolor=orange,textsize=scriptsize]{todonotes}
@@ -42,8 +44,10 @@
 
 \tableofcontents
 \clearpage
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
 \section{Introduction}
-Sales forecasting is important because bla bla
+Sales forecasting is an important application. Especially for business as it enables companies to make better, more informed decisions. This is best done with enough information about previous sales at hand, and using it to predict future revenue and growth.
 
 \subsection{Problem Definition}
 We are given Walmart sales data from ten stores in three different states. Our project can be divided into two main problems: the first is to answer business-related questions on the dataset (data analysis) and the second is to devise a machine learning model that can predict the sales of each item offered by the stores twenty eight days into the future. 
@@ -65,201 +69,323 @@ The dataset is divided into four files, each of which is described in \Cref{tab:
     \begin{tabular}{@{}ccc@{}}
     \toprule
     File name                  & Description                                                                                                & Shape               \\ \midrule
-    sales_train_validation.csv & Contains the sales data for each item                                                                      & $30490 \times 1919$ \\
+    sales_train_validation.csv & Contains the sales data for each item.                                                                      & $30490 \times 1919$ \\
     calendar.csv & \begin{tabular}[c]{@{}c@{}}Contains calendar dates as well as \\ any events that happen on each date.\end{tabular} & $1969 \times 14$ \\
     sell_prices.csv            & \begin{tabular}[c]{@{}c@{}}Contains the sell price for each item\\ divided by store and week.\end{tabular} & $6841121 \times 4$  \\
     sample_submission.csv      & \begin{tabular}[c]{@{}c@{}}Contains sample submission forecasting\\ for the competition.\end{tabular}      & $60980 \times 29$   \\ \bottomrule
     \end{tabular}
 \end{table}
 
-The columns in each file are described in Tables~[??].
+The columns in each file are described in \Cref{tab:calender-desc}, \Cref{tab:sales-desc} and \Cref{tab:prices-desc}.
 
 
 \section{Exploratory Data Analysis}
-The data analyzed in this section are from 3 files: \begin{itemize}
-    \item \texttt{calender.csv}: containing the columns: \texttt{date}: the date in Year-Month-Day format, \texttt{wm\_yr\_wk}: code the week year from the dataset starting date, \texttt{weekday}: the weekday, \texttt{wday}: the weekday's number, starting from Saturday, \texttt{month}: the month, \texttt{year}: the year, \texttt{d}: the incremental ID of the day in the dataset, \texttt{event\_name\_1}: name of the event occurring in this day, if one exists, \texttt{event\_type\_1}: type of the event occurring in this day, if one exists, \texttt{event\_name\_2}: name of the second event occurring in that date,if one exists, \texttt{event\_type\_2}: type of the second event occurring in that date, if one exists, \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI}: 1 if SNAP\footnote{The Supplement Nutrition 
-    Assistance Program (SNAP) provides low income families and individuals with an Electronic Benefits Transfer 
-    debit card to purchase food products, this purchasing process is done monthly across 10 days} purchases are allowed on this date.
-    \item \texttt{sales\_train\_validation.csv}: containing the columns: \texttt{id}, with the id of the item codes as \textit{item\_id}\_\textit{store\_id}\_validation, \texttt{item\_id}: product ID, \texttt{dept\_id}: department ID,
-    \texttt{cat\_id}: category ID, \texttt{store\_id}: store ID, \texttt{state\_id}: state ID. and extra 1913 columns containing the total sold items each day from \texttt{d\_1} to \texttt{d\_1913}.
-    \item \texttt{sell\_prices.csv}: containing the columns: \texttt{store\_id}: store ID, \texttt{item\_id}: has the product id coded as above, \texttt{wm\_yr\_wk}: code the week year from the dataset starting date, \texttt{sell\_price}: selling price of each product, for each day, in each store.
-    
-\end{itemize}
+In this section, we analyze and visualize the data from 3 files; calendar.csv, \\ sales_train_validation.csv, and sell_prices.csv.
+
 \subsection{Calender-Focused Analysis}
-The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated (counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting. With Religious events being the most frequent with 55 occurrence. Checking the calender data, no missing values were found.
+The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated annually(counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting events. With Religious events being the most frequent with 55 occurrence. We also have 10 SNAP days each month in each state. Columns descriptions are in \Cref{tab:calender-desc}.
+\begin{table}[H]
+    \centering
+    \caption{Calender details}
+    \label{tab:calender-desc}
+    \begin{tabular}{@{}lllll@{}}
+    \toprule
+    File            & Column name                                                                                                  & Column description &  &  \\ \midrule
+    \multirow{7}{*}{calender.csv}    & 	\texttt{date} & The date in Year-Month-Day format. \\ 
+                    & \texttt{wm\_yr\_wk}                                                                         & \begin{tabular}[c]{@{}l@{}}Code the week year from the dataset\\ starting date.\end{tabular}              \\
+                    & \texttt{weekday}                                                                            & The weekday.                                                                                             \\
+                    & \texttt{wday}                                                                               & \begin{tabular}[c]{@{}l@{}}The weekday's number, starting from\\ Saturday.\end{tabular}                   \\
+                    & \texttt{month}                                                                              & The month.                                                                                                \\
+                    & \texttt{year}                                                                               & The year.                                                                                                 \\
+                    & \texttt{d}                                                                                  & \begin{tabular}[c]{@{}l@{}}The incremental ID of the day in the\\ dataset.\end{tabular}                   \\
+                    & \texttt{event\_name\_1}                                                                     & \begin{tabular}[c]{@{}l@{}}Name of the event occurring in this day,\\ if one exists.\end{tabular}         \\
+                    & \texttt{event\_type\_1}                                                                     & \begin{tabular}[c]{@{}l@{}}Type of the event occurring in this day,\\ if one exists.\end{tabular}         \\
+                    & \texttt{event\_name\_2}                                                                     & \begin{tabular}[c]{@{}l@{}}Name of the second event occurring in\\ that date,if one exists.\end{tabular}  \\
+                    & \texttt{event\_type\_2}                                                                     & \begin{tabular}[c]{@{}l@{}}Type of the second event occurring in\\ that date, if one exists.\end{tabular} \\
+                    & \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI} & \begin{tabular}[c]{@{}l@{}}Equals 1 if SNAP\footnote{The Supplement Nutrition      Assistance Program (SNAP) provides low income families and individuals with an Electronic Benefits Transfer      debit card to purchase food products, this purchasing process is done monthly across 10 days} purchases are allowed on this \\ date.\end{tabular}  \\ \bottomrule
+    \end{tabular}
+    \end{table}
+
 \subsection{Sales-Focused Analysis}
-Checking the calender data, no missing values were found. But the sales data is for 1913 days only,unlike the calender. The data contains 30490 rows and 1919 columns. The data contains 3 states; California (CA), Texas (TX) and Wisconsin (WI), with 4, 3, and 3 stores respectively. It also contains 4 categories; Hobbies, Household, Foods, with 2, 2, and 3 departments respectively.
+The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to \textit{\date{April 24, 2016}}, unlike the calender which covered $1969$ days. The data contains $30490$ rows and $1919$ columns, with sales data from 3 states; California (CA), Texas (TX) and Wisconsin (WI), with $4$, $3$, and $3$ stores in each respectively. It also contains $4$ categories of products; Hobbies, Household, Foods, with $2$, $2$, and $3$ departments respectively. Columns descriptions are in \Cref{tab:sales-desc}.
+
+    \begin{table}[H]
+        \centering
+        \caption{Sales details}
+        \label{tab:sales-desc}
+        \begin{tabular}{@{}lllll@{}}
+        \toprule
+        File            & Column name                                                                                                  & Column description &  &  \\ \midrule
+    \multirow{7}{*}{sales\_train\_validation.csv} & \texttt{id}                                                                                            & \begin{tabular}[c]{@{}l@{}}With the id of the item codes as \\ \textit{item\_id}\_\textit{store\_id}\_validation.\end{tabular}  \\
+                                                       & \texttt{item\_id}                                                                                      & Product ID.                                                                                                           \\
+                                                       & \texttt{dept\_id}                                                                                      & Department ID.                                                                                                        \\
+                                                       & \texttt{cat\_id}                                                                                       & Category ID.                                                                                                          \\
+                                                       & \texttt{store\_id}                                                                                     & Store ID.                                                                                                             \\
+                                                       & \texttt{state\_id}                                                                                     & State ID.                                                                                                             \\
+                                                       & \texttt{d\_1}, \texttt{d\_2}, \dots, \texttt{d\_1913} & \begin{tabular}[c]{@{}l@{}}$1913$ columns, containing the total \\ sold items each day.\end{tabular}
+        \\ \bottomrule
+        \end{tabular}
+        \end{table}
+
 \subsubsection{Sales Exploration Figures}
-    \begin{figure}[H]
-	\centering
-        \includegraphics[width=0.65\textwidth]{{"Share of each state from the products"}}
-    \end{figure}
-    Here, it is clear that CA has the more products, this could just be a result of it having more stores.
+    
+    \textbf{How is the product distribution?}\\
+    Products are distributed equally on the different stores by Walmart, without favoring any of them, as shown in \Cref{fig:SE1}.
     \begin{figure}[H]
     \centering
-        \includegraphics[width=0.65\textwidth]{{"Share of each store from the products"}}
-    \end{figure}
-    Investigating further, we find that this is just the case. Meaning that Walmart equalizes between these markets.
-    \begin{figure}[H]
-    \centering
-        \includegraphics[width=0.65\textwidth]{{"Share of each category from the products"}}
-    \end{figure}
-    \begin{figure}[H]
-    \centering
-        \includegraphics[width=0.65\textwidth]{{"Share of each department from the products"}}
-    \end{figure}
-        Walmart stocks up on products of department FOODS\_3 the most.
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each state"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each store"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each category"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Sales percentage of each department"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per State for Each Category"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per category for each state"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per Store for Each Category"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per Category for Each Store"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per State for Each Department"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per Department for each State"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per Store for Each Department"}}
-    \end{figure}
-    The following 4 figures the total sales plot aren't the most informative, due to large variation between different departments, so they were normalized and stacked for better visualization:
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Percentage of Each Store Sales for Each Department"}}
+        \includegraphics[width=0.5\textwidth]{{"Share of each store from the products"}}
+    \caption{Share of each store from the products}
+    \label{fig:SE1}
     \end{figure}
 
+    \textbf{How good is this distribution scheme?}\\
+    To know that, we need to check the total sales and revenue. So we add a total sales column to the data. From \Cref{fig:SE2}, we find that no, not all states are equally profitable, California provides $1.5$ of the sales of each of Texas and Wisconsin. CA\_3 is especially profitable, amounting to $17\%$ of the total sales.
     \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Total Sales per Department for Each Store"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=0.65\textwidth]{{"Percentage of Each Department Sales for Each Store"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Total sales over time"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Time Series Decomposition"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Sales in different years"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"2011 Q1"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"2011 Q2"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"2011 Q3"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"2011 Q4"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Total Sales per month"}}
-    \end{figure}
-    March has the highest total sales, which is surprising as it comes $2_{nd}$, after February, according to the number on events happening in it.
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Total Sales per day in the month"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Total Sales for Each Event"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Total Sales for Each EventCategory"}}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Monthly sales in each state"}}
-    \end{figure}
-    So the absolute month with the maximum sales for each state:
-    \begin{itemize}
-        \item California: \date(August, 2015)
-        \item Texas: \date(August, 2013)
-        \item Wisconsin: \date( March, 2016)
-    \end{itemize}
-    Over the years, the month with the maximum sales in each state was the same as the one with the maximum total sales, March.
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Per Month sales in each state"}}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Sales percentage of each state"}}  
+          \caption{Sales percentage of each state}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Sales percentage of each store"}}  
+          \caption{Sales percentage of each store}
+        \end{subfigure}
+        \caption{Sales percentage for the states and stores}
+        \label{fig:SE2}
     \end{figure}
 
+    \textbf{What is the most popular category?} \\
+    We found that FOODS is the most popular category, with a staggering $68.6\%$ of the total sales, and the most popular department is FOODS_3, with $49.3\%$ of the sales. While the least popular category and department is HOBBIES and HOBBIES_2, with $9.3\%$ and $0.8\%$ of the total sales respectively. This is shown in \Cref{fig:SE3}.
     \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Monthly sales for each category"}}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Sales percentage of each category"}}  
+          \caption{Sales percentage of each category}
+        \end{subfigure}
+          \begin{subfigure}{.5\textwidth}
+            \centering
+            \includegraphics[width=.8\linewidth]{{"Sales percentage of each department"}}  
+            \caption{Sales percentage of each department}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+            \centering
+            \includegraphics[width=.8\linewidth]{{"Total Sales per State for Each Category"}}  
+            \caption{Total Sales per State for Each Category}
+          \end{subfigure}
+          \begin{subfigure}{.5\textwidth}
+              \centering
+              \includegraphics[width=.8\linewidth]{{"Total Sales per State for Each Department"}}  
+              \caption{Total Sales per State for Each Department}
+            \end{subfigure}
+            \begin{subfigure}{\textwidth}
+                \centering
+                \includegraphics[width=.5\linewidth]{{"Percentage of Each Department Sales for Each Store"}}  
+                \caption{Percentage of Each Department Sales for Each Store}
+            \end{subfigure}
+        \caption{Total sales for the categories and departments}
+        \label{fig:SE3}
     \end{figure}
+
+    \textbf{Is the current stocking scheme good?}\\
+    Yes, Walmart stocks up on a variety of products of the most popular category and department very well, as shown in \Cref{fig:SE4}.
     \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Per Month sales for each category"}}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Share of each category from the products"}}  
+          \caption{Share of each category from the products}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Share of each department from the products"}}  
+          \caption{Share of each department from the products}
+        \end{subfigure}
+        \caption{Share of each category and department from the products}
+        \label{fig:SE4}
     \end{figure}
+
+    \textbf{How do sales fluctuate over time?} \\
+    Generally, they increase throughout the covered period as shown in \Cref{fig:SE5}, especially from $2011$ to $2012$ as shown in \Cref{fig:SE7}. The observed sales data has a trend and it is highly seasonal, as shown in \Cref{fig:SE6}.
     \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Monthly sales for each department"}}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Total sales over time"}}  
+          \caption{Total sales over time}
+          \label{fig:SE5}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+            \centering
+            \includegraphics[width=.8\linewidth]{{"Sales in different years"}}  
+            \caption{Sales in different years}
+            \label{fig:SE7}
+          \end{subfigure}
+        \begin{subfigure}{\textwidth}
+          \centering
+          \includegraphics[width=.5\linewidth]{{"Time Series Decomposition"}}  
+          \caption{Time Series Decomposition}
+          \label{fig:SE6}
+        \end{subfigure}
+        \caption{Sales as a time series}
     \end{figure}
+
+   \textbf{How do events affect sales?} \\
+   By zooming in on one year specifically, from \date{January 29, 2011} to \date{January 29, 2012}, shown in \Cref{fig:SE8}, we find that, surprisingly, sales don't go through a substantial spike around most events. Still we find that from all the events categories, days of religious events\footnote{Except for Christmas, on which the sales are zero, and these Walmart stores probably close} have the highest sales, as shown in \Cref{fig:SE9}, while the highest sales day given an event is on the SuperBowl day, as shown in \Cref{fig:SE10}.
+   \begin{figure}[H]
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"2011 Q1"}}  
+      \caption{First Quarter}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"2011 Q2"}}  
+        \caption{Second Quarter}
+      \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"2011 Q3"}}  
+        \caption{Third Quarter}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"2011 Q4"}}  
+        \caption{Fourth Quarter}
+    \end{subfigure}
+    \caption{Events occurring in 2011}
+    \label{fig:SE8}
+\end{figure}
+\begin{figure}[H]
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Total Sales for Each Event"}}  
+      \caption{Total Sales for Each Event}
+      \label{fig:SE10}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Total Sales for Each Event Category"}}  
+        \caption{Total Sales for Each Event Category}
+        \label{fig:SE9}
+      \end{subfigure}
+    \caption{Total Sales given an event}
+\end{figure}
+
+\textbf{When are the highest sales?} \\
+As shown in \Cref{fig:SE11}, March is the highest total sales month, which is surprising as it comes second, after February, according to the number on events happening in it. The sales are high in the first 15 days of the month too, which makes sense as it is the time where people are more prone to buy things, after cashing the monthly paycheck, and most of the sales happen on the weekend.
+\begin{figure}[H]
+    \begin{subfigure}{.3\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Total Sales per month"}}  
+      \caption{Total Sales per month}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Total Sales per day in the month"}}  
+        \caption{Total Sales per day in the month}
+      \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Total Sales for each day of the week"}}  
+        \caption{Total Sales for each day of the week}
+      \end{subfigure}
+    \caption{Total Sales given a certain month, day, or weekday}
+    \label{fig:SE11}
+\end{figure}
+
+Zooming in on states, we find that the absolute month with the maximum sales for each state:
+\begin{itemize}
+    \item California: \date{August, 2015}.
+    \item Texas: \date{August, 2013}.
+    \item Wisconsin: \date{March, 2016}.
+\end{itemize}
+With California showing the maximum increase over the years. The month with the maximum sales in each state was the same as the one with the maximum total sales, March. This is shown in \Cref{fig:SE12}. This is also the case for departments, shown in \Cref{fig:SE13}.
+
+\begin{figure}[H]
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Monthly sales in each state"}}  
+      \caption{Monthly sales in each state}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Per Month sales in each state"}}  
+        \caption{Per Month sales in each state}
+      \end{subfigure}
+    \caption{Total monthly sales given a state}
+    \label{fig:SE12}
+\end{figure}
+
+\begin{figure}[H]
+      \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Monthly sales for each department"}}  
+        \caption{Monthly sales for each department}
+      \end{subfigure}
+      \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"Per Month sales for each department"}}  
+        \caption{Per Month sales for each department}
+      \end{subfigure}
+    \caption{Total monthly sales given a department}
+    \label{fig:SE13}
+\end{figure}
+
+
+\subsection{Prices-Focused Analysis}
+The sell prices data has the weekly price for each product from \date(January 29, 2011) to \date(June 19, 2016), so the price data is for all the calender file weeks, unlike the sales data. The prices of products are not the same in different stores. We also found that the product with the greatest price change is HOUSEHOLD_2_406 sold in WI_2 store, having a minimum price of $3.26$ USD and a maximum price of $107.32$ USD. Moreover, There are $8247$ products, in different stores, that don't undergo any price change through the $5$ years; with $3497$ household items, $2907$ foods items, and $1843$ hobbies items. Some of these products' prices haven't changed in any of the store, like: FOODS_3_154, HOUSEHOLD_2_322, HOUSEHOLD_1_538, FOODS_3_309 and HOBBIES_2_014. Columns descriptions are in \Cref{tab:prices-desc}.
+
+\begin{table}[H]
+    \centering
+    \caption{Prices details}
+    \label{tab:prices-desc}
+    \begin{tabular}{@{}lllll@{}}
+    \toprule
+    File            & Column name                                                                                                  & Column description &  &  \\ \midrule
+    \multirow{4}{*}{sell\_prices.csv} & \texttt{store\_id}   & store ID                                                    \\
+                              & \texttt{item\_id}    & the product ID coded as in \Cref{tab:sales-desc}                           \\
+                              & \texttt{wm\_yr\_wk}  & code the week year from the dataset starting date           \\
+                              & \texttt{sell\_price} & selling price of each product, for each week, in each store
+    \\ \bottomrule
+    \end{tabular}
+    \end{table}
+
+\subsubsection{Prices Exploration Figures}
+\textbf{What are the most profitable states? and categories?} \\
+    Comparing the total revenue with the total sales, we find that they match, with FOODS being the highest grossing category, and California being the most profitable state. This is shown in \Cref{fig:SE14}.
     \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{{"Per Month sales for each department"}}
-    \end{figure}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Revenue percentage of each category"}}  
+          \caption{Revenue percentage of each category}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"Revenue percentage of each state"}}  
+          \caption{Revenue percentage of each state}
+        \end{subfigure}
+      \caption{Revenue percentage}
+      \label{fig:SE14}
+  \end{figure}
+
+\textbf{What are the most profitable items?}\\
+The top $5$ items that generate the most revenue are FOODS_3 items, and they are\footnote{in million USDs}:\begin{itemize}
+    \item FOODS_3_120, sold in CA_3	with revenue $197541.66$.
+    \item FOODS_3_090, sold in CA_3	with revenue $173741.55$.
+    \item FOODS_3_586, sold in TX_2	with revenue $171385.16$.
+    \item FOODS_3_120, sold in CA_1 with revenue $151387.02$.
+    \item FOODS_3_586, sold in TX_3 with revenue $137892.80$.
+\end{itemize}
+  
 \par\noindent\rule{\linewidth}{2px}
-Draft of the analysis points we should cover, divided into 2 parts: doing, and haven't started, since the done ones can be seen above. Will be updated with more points, if we think of more, and the current state of each one. This is just a draft to do list and will surely be replaced in the final document.
 \begin{itemize}
     \item Haven't started: \begin{enumerate}
-        \item total revenue of each category given the state
         \item total revenue of each category given the store
-        \item total revenue of each category given an event happens in that day
-        \item total revenue in each weekday
         \item total revenue in each month
         \item total revenue in each year
+        \item total revenue in each store
     \end{enumerate}
     \item Doing:  \begin{enumerate}
-        \item total sold items in each weekday
-        \item total revenue in each store
-        \item total revenue in each state
-        \item total revenue of each category
+    \item SNAP sales analysis
     \end{enumerate}
 \end{itemize}
 
@@ -268,10 +394,10 @@ Draft of the analysis points we should cover, divided into 2 parts: doing, and h
 
 Interesting questions that our project should answer:
 \begin{enumerate}
-    \item Which department is the most important by sales? Which department is the least important?
+    \item Which department is the most important by sales? Which department is the least important?  \textcolor{red}{answered.}
     \item Which items are commonly bought together in each store? What about which items are bought together in each state? \textcolor{red}{We can't answer this since we don't have individual shopping data.}
-    \item Which feast days generate the most sales? Which feast days generate the least?
-    \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold?
+    \item Which feast days generate the most sales? Which feast days generate the least? \textcolor{red}{answered first part.}
+    \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold? \textcolor{red}{answered.}
     \item Can we predict the item sales accurately?
 \end{enumerate}
 

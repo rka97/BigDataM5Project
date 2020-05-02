@@ -250,7 +250,7 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
     \end{figure}
 
    \textbf{How do events affect sales?} \\
-   By zooming in on one year specifically, from \date{January 29, 2011} to \date{January 29, 2012}, shown in \Cref{fig:SE8}, we find that, surprisingly, sales don't go through a substantial spike around most events. Still we find that from all the events categories, days of religious events\footnote{Except for Christmas, on which the sales are zero, and these Walmart stores probably close} have the highest sales, as shown in \Cref{fig:SE9}, while the highest sales day given an event is on the SuperBowl day, as shown in \Cref{fig:SE10}.
+   By zooming in on one year specifically, from \date{January 29, 2011} to \date{January 29, 2012}, shown in \Cref{fig:SE8}, we find that, surprisingly, sales don't go through a substantial spike around most events. Still we find that from all the events categories, days of religious events\footnote{Except for Christmas, on which the sales are zero, and these Walmart stores probably close} have the highest sales, while sporting event days have the lowest ones, as shown in \Cref{fig:SE9}. On the contrary, the highest sales day given an event is on the SuperBowl day, and the lowest is Christmas day, followed by Thanksgiving as shown in \Cref{fig:SE10}.
    \begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
       \centering
@@ -290,6 +290,34 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
       \end{subfigure}
     \caption{Total Sales given an event}
 \end{figure}
+
+\textbf{How are sales affected by SNAP days?}
+SNAP days make up only third of the month and by analyzing it was found that the sales on SNAP days comprise almost a third of each months sales of each category, except for FOODS, of which they comprise $36.5\%$. We also found that the highest sales percentage on SNAP days is in Wisconsin, with $37.4\%$, and the least is in California, with $34.65\%$
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{"Sales percentage of each category during SNAP days"}}  
+    \caption{Sales percentage of each category during SNAP days}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Sales percentage of each state during SNAP days"}}  
+      \caption{Sales percentage of each state during SNAP days}
+    \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{"Sales per Category for SNAP vs Non-SNAP days"}}  
+    \caption{Sales per Category for SNAP vs Non-SNAP days}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Sales per State for SNAP vs Non-SNAP days"}}  
+      \caption{Sales per State for SNAP vs Non-SNAP days}
+    \end{subfigure}
+  \caption{SNAP days sales}
+  \label{fig:SE9}
+\end{figure}
+
 
 \textbf{When are the highest sales?} \\
 As shown in \Cref{fig:SE11}, March is the highest total sales month, which is surprising as it comes second, after February, according to the number on events happening in it. The sales are high in the first 15 days of the month too, which makes sense as it is the time where people are more prone to buy things, after cashing the monthly paycheck, and most of the sales happen on the weekend.
@@ -399,14 +427,11 @@ The top $5$ items that generate the most revenue are FOODS_3 items, and they are
   
 \par\noindent\rule{\linewidth}{2px}
 \begin{itemize}
-    \item Haven't started: \begin{enumerate}
+    \item Working on the revenue data didn't give more insight than working on the sales data, so i am skipping those as the revenue points covered above are enough: \begin{enumerate}
         \item total revenue of each category given the store
         \item total revenue in each month
         \item total revenue in each year
         \item total revenue in each store
-    \end{enumerate}
-    \item Doing:  \begin{enumerate}
-    \item SNAP sales analysis
     \end{enumerate}
 \end{itemize}
 
@@ -417,7 +442,7 @@ Interesting questions that our project should answer:
 \begin{enumerate}
     \item Which department is the most important by sales? Which department is the least important?  \textcolor{red}{answered.}
     \item Which items are commonly bought together in each store? What about which items are bought together in each state? \textcolor{red}{We can't answer this since we don't have individual shopping data.}
-    \item Which feast days generate the most sales? Which feast days generate the least? \textcolor{red}{answered first part.}
+    \item Which feast days generate the most sales? Which feast days generate the least? \textcolor{red}{answered.}
     \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold? \textcolor{red}{answered.}
     \item Can we predict the item sales accurately?
 \end{enumerate}

@@ -104,7 +104,7 @@ The columns in each file are described in \Cref{tab:calendar-desc}.
 In this section, we analyze and visualize the data from 3 files; calendar.csv, \\ sales_train_validation.csv, and sell_prices.csv.
 
 \subsection{Calender-Focused Analysis}
-The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated annually(counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting events. With Religious events being the most frequent with 55 occurrence. We also have 10 SNAP days each month in each state. Columns descriptions are in \Cref{tab:calender-desc}.
+The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated annually (counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting events. With Religious events being the most frequent with 55 occurrence. We also have 10 SNAP days each month in each state. Columns descriptions are in \Cref{tab:calender-desc}.
 \begin{table}[H]
     \centering
     \caption{Calender details}
@@ -150,8 +150,8 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
 
 \subsubsection{Sales Exploration Figures}
     
-    \textbf{How is the product distribution?}\\
-    Products are distributed equally on the different stores by Walmart, without favoring any of them, as shown in \Cref{fig:SE1}.
+    \textbf{What is the product distribution like?}\\
+    Products are distributed equally on the different stores by Walmart, without favoring any of the stores, as shown in \Cref{fig:SE1}.
     \begin{figure}[H]
     \centering
         \includegraphics[width=0.5\textwidth]{{"Share of each store from the products"}}
@@ -160,7 +160,7 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
     \end{figure}
 
     \textbf{How good is this distribution scheme?}\\
-    To know that, we need to check the total sales and revenue. So we add a total sales column to the data. From \Cref{fig:SE2}, we find that no, not all states are equally profitable, California provides $1.5$ of the sales of each of Texas and Wisconsin. CA\_3 is especially profitable, amounting to $17\%$ of the total sales.
+    To know that, we need to check the total sales and revenue. So we add a total sales column to the data. From \Cref{fig:SE2}, we find that no, not all states are equally profitable, California provides $1.5$ of the sales of each of Texas and Wisconsin. CA\_3 is especially profitable, amounting to $17\%$ of the total sales, while CA\_4 is the least profitable, with $6.2\%$ of the total sales.
     \begin{figure}[H]
         \begin{subfigure}{.5\textwidth}
           \centering
@@ -177,7 +177,7 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
     \end{figure}
 
     \textbf{What is the most popular category?} \\
-    We found that FOODS is the most popular category, with a staggering $68.6\%$ of the total sales, and the most popular department is FOODS_3, with $49.3\%$ of the sales. While the least popular category and department is HOBBIES and HOBBIES_2, with $9.3\%$ and $0.8\%$ of the total sales respectively. This is shown in \Cref{fig:SE3}.
+    We found that FOODS is the most popular category, with a staggering $68.6\%$ of the total sales, and the most popular department is FOODS_3, with $49.3\%$ of the sales. While the least popular category and department is HOBBIES and HOBBIES_2, with $9.3\%$ and $0.8\%$ of the total sales respectively. This is shown in \Cref{fig:SE3}. We notice that CA\_3 has the highest percentage of HOUSEHOLD\_2 sales, while WA\_2 has the highest percentage of FOODS\_2 sales, and WA\_3 has the highest percentage of FOOD\_3 sales.
     \begin{figure}[H]
         \begin{subfigure}{.5\textwidth}
           \centering
@@ -226,7 +226,7 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
     \end{figure}
 
     \textbf{How do sales fluctuate over time?} \\
-    Generally, they increase throughout the covered period as shown in \Cref{fig:SE5}, especially from $2011$ to $2012$ as shown in \Cref{fig:SE7}. The observed sales data has a trend and it is highly seasonal, as shown in \Cref{fig:SE6}.
+    Generally, they increase throughout the covered period as shown in \Cref{fig:SE5}, especially from $2011$ to $2012$ as shown in \Cref{fig:SE7}. The observed sales data has a trend and it is highly seasonal, as shown in \Cref{fig:SE6}. For California and Texas, the seasonality is similar. while it differs for Wisconsin. The trend increase in Texas is the least and the slowest, these are shown in \Cref{fig:SE16}
     \begin{figure}[H]
         \begin{subfigure}{.5\textwidth}
           \centering
@@ -248,9 +248,28 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
         \end{subfigure}
         \caption{Sales as a time series}
     \end{figure}
+    \begin{figure}[H]
+      \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{{"CA Time Series Decomposition"}}  
+        \caption{CA Time Series Decomposition}
+      \end{subfigure}
+      \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{{"TX Time Series Decomposition"}}  
+          \caption{TX Time Series Decomposition}
+        \end{subfigure}
+      \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=.5\linewidth]{{"WI Time Series Decomposition"}}  
+        \caption{WI Time Series Decomposition}
+      \end{subfigure}
+      \caption{Time Series decomposition of sales at each state}
+      \label{fig:SE16}
+  \end{figure}
 
    \textbf{How do events affect sales?} \\
-   By zooming in on one year specifically, from \date{January 29, 2011} to \date{January 29, 2012}, shown in \Cref{fig:SE8}, we find that, surprisingly, sales don't go through a substantial spike around most events. Still we find that from all the events categories, days of religious events\footnote{Except for Christmas, on which the sales are zero, and these Walmart stores probably close} have the highest sales, while sporting event days have the lowest ones, as shown in \Cref{fig:SE9}. On the contrary, the highest sales day given an event is on the SuperBowl day, and the lowest is Christmas day, followed by Thanksgiving as shown in \Cref{fig:SE10}.
+   By zooming in on one year specifically, from \date{January 29, 2011} to \date{January 29, 2012}, shown in \Cref{fig:SE8}, we find that, surprisingly, sales don't go through a substantial spike on most events days. Still we find that from all the events categories, days of sporting events have the highest sales, while national event days have the lowest ones, as shown in \Cref{fig:SE9}. On the contrary, the highest sales day given an event is on the Labour Day, followed by the SuperBowl day, and the lowest is Christmas day\footnote{on which the sales are zero, so these Walmart stores probably close}, followed by Thanksgiving as shown in \Cref{fig:SE10}. \footnote{We skipped events_2 in some of the calculations as it contributed very little to the total events (4 out of the total 167, counting duplicates)}
    \begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
       \centering
@@ -278,21 +297,36 @@ The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to
 \begin{figure}[H]
     \begin{subfigure}{.5\textwidth}
       \centering
-      \includegraphics[width=.8\linewidth]{{"Total Sales for Each Event"}}  
-      \caption{Total Sales for Each Event}
+      \includegraphics[width=.8\linewidth]{{"Average Sales for Each Event"}}  
+      \caption{Average Sales for Each Event}
       \label{fig:SE10}
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[width=.8\linewidth]{{"Total Sales for Each Event Category"}}  
-        \caption{Total Sales for Each Event Category}
+        \includegraphics[width=.8\linewidth]{{"Average Sales for Each Event Category"}}  
+        \caption{Average Sales for Each Event Category}
         \label{fig:SE9}
       \end{subfigure}
-    \caption{Total Sales given an event}
+    \caption{Average Sales given an event}
+\end{figure}
+Also by analyzing the sales on the weekend before the events, which are a high point for sales usually as shown in \Cref{fig:SE11}, we found that there is an increase to the average, as shown in \Cref{fig:SE15}. The weekend before Easter is the most profitable weekend before an event, while the least profitable one is New Year. For the categories, the most profitable are religious events, followed by sporting events, with the least profitable being national events. And this contrast makes sense, as people would usually shop for watching a match on the same day, it demands only a short-term arrangement, while they would shop for celebrating a religious feast, which is a family event, in advance.
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{"Average Sales before Each Event"}}  
+    \caption{Average Sales before Each Event}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{{"Average Sales before Events for Each Event Category"}}  
+      \caption{Average Sales before Events for Each Event Category}
+    \end{subfigure}
+  \caption{Average Sales on the weekend before an event}
+  \label{fig:SE15}
 \end{figure}
 
-\textbf{How are sales affected by SNAP days?}
-SNAP days make up only third of the month and by analyzing it was found that the sales on SNAP days comprise almost a third of each months sales of each category, except for FOODS, of which they comprise $36.5\%$. We also found that the highest sales percentage on SNAP days is in Wisconsin, with $37.4\%$, and the least is in California, with $34.65\%$
+\textbf{How are sales affected by SNAP days?} \\
+SNAP days make up only third of the month and by analyzing, it was found that the sales on SNAP days comprise about a third of each months sales of each category, except for FOODS, of which they comprise $36.5\%$. We also found that the highest sales percentage on SNAP days is in Wisconsin, with $37.4\%$, and the least is in California, with $34.65\%$. FOODS is still themost popular category, with $70.4\%$ of the total sales, and California is still the most profitable state, but Wisconsin's share increases from $27.2\%$ to $29.0\%$.
 \begin{figure}[H]
   \begin{subfigure}{.5\textwidth}
     \centering
@@ -306,13 +340,13 @@ SNAP days make up only third of the month and by analyzing it was found that the
     \end{subfigure}
   \begin{subfigure}{.5\textwidth}
     \centering
-    \includegraphics[width=.8\linewidth]{{"Sales per Category for SNAP vs Non-SNAP days"}}  
-    \caption{Sales per Category for SNAP vs Non-SNAP days}
+    \includegraphics[width=.8\linewidth]{{"Average Sales per Category for SNAP vs Non-SNAP days"}}  
+    \caption{Average Sales per Category for SNAP vs Non-SNAP days}
   \end{subfigure}
   \begin{subfigure}{.5\textwidth}
       \centering
-      \includegraphics[width=.8\linewidth]{{"Sales per State for SNAP vs Non-SNAP days"}}  
-      \caption{Sales per State for SNAP vs Non-SNAP days}
+      \includegraphics[width=.8\linewidth]{{"Average Sales per State for SNAP vs Non-SNAP days"}}  
+      \caption{Average Sales per State for SNAP vs Non-SNAP days}
     \end{subfigure}
   \caption{SNAP days sales}
   \label{fig:SE9}
@@ -320,24 +354,24 @@ SNAP days make up only third of the month and by analyzing it was found that the
 
 
 \textbf{When are the highest sales?} \\
-As shown in \Cref{fig:SE11}, March is the highest total sales month, which is surprising as it comes second, after February, according to the number on events happening in it. The sales are high in the first 15 days of the month too, which makes sense as it is the time where people are more prone to buy things, after cashing the monthly paycheck, and most of the sales happen on the weekend.
+As shown in \Cref{fig:SE11}, August is the highest average sales month, which makes sense as the time series has a peak in the seasonality each August \footnote{the highest overall month is March}, this could be due to summer vacations, so both parents and non-parents have extra time for shopping. Each month, the sales are higher in the first 15 days of the month, which makes sense as it is the time where people are more prone to buy things, after cashing the monthly paycheck, and most of the sales happen on the weekend.
 \begin{figure}[H]
     \begin{subfigure}{.3\textwidth}
       \centering
-      \includegraphics[width=.8\linewidth]{{"Total Sales per month"}}  
-      \caption{Total Sales per month}
+      \includegraphics[width=.8\linewidth]{{"Mean Sales per month"}}  
+      \caption{Mean Sales per month}
     \end{subfigure}
     \begin{subfigure}{.3\textwidth}
         \centering
-        \includegraphics[width=.8\linewidth]{{"Total Sales per day in the month"}}  
-        \caption{Total Sales per day in the month}
+        \includegraphics[width=.8\linewidth]{{"Average Sales per day in the month"}}  
+        \caption{Average Sales per day in the month}
       \end{subfigure}
     \begin{subfigure}{.3\textwidth}
         \centering
-        \includegraphics[width=.8\linewidth]{{"Total Sales for each day of the week"}}  
-        \caption{Total Sales for each day of the week}
+        \includegraphics[width=.8\linewidth]{{"Average Sales for each day of the week"}}  
+        \caption{Average Sales for each day of the week}
       \end{subfigure}
-    \caption{Total Sales given a certain month, day, or weekday}
+    \caption{Average Sales given a certain month, day, or weekday}
     \label{fig:SE11}
 \end{figure}
 
@@ -381,7 +415,7 @@ With California showing the maximum increase over the years. The month with the 
 
 
 \subsection{Prices-Focused Analysis}
-The sell prices data has the weekly price for each product from \date(January 29, 2011) to \date(June 19, 2016), so the price data is for all the calender file weeks, unlike the sales data. The prices of products are not the same in different stores. We also found that the product with the greatest price change is HOUSEHOLD_2_406 sold in WI_2 store, having a minimum price of $3.26$ USD and a maximum price of $107.32$ USD. Moreover, There are $8247$ products, in different stores, that don't undergo any price change through the $5$ years; with $3497$ household items, $2907$ foods items, and $1843$ hobbies items. Some of these products' prices haven't changed in any of the store, like: FOODS_3_154, HOUSEHOLD_2_322, HOUSEHOLD_1_538, FOODS_3_309 and HOBBIES_2_014. Columns descriptions are in \Cref{tab:prices-desc}.
+The sell prices data has the weekly price for each product from \date{January 29, 2011} to \date{June 19, 2016}, so the price data is for all the calender file weeks, unlike the sales data. We found that the prices of products are not the same in different stores, even at the same day.  Also, that the product with the greatest price change is HOUSEHOLD_2_406 sold in WI_2 store, having a minimum price of $3.26$ USD and a maximum price of $107.32$ USD. Moreover, There are $8247$ products, in different stores, that don't undergo any price change through the $5$ years; with $3497$ household items, $2907$ foods items, and $1843$ hobbies items. Some of these products' prices haven't changed in any of the stores, like: FOODS_3_154, HOUSEHOLD_2_322, HOUSEHOLD_1_538, FOODS_3_309 and HOBBIES_2_014. Columns descriptions are in \Cref{tab:prices-desc}.
 
 \begin{table}[H]
     \centering
@@ -390,10 +424,10 @@ The sell prices data has the weekly price for each product from \date(January 29
     \begin{tabular}{@{}lllll@{}}
     \toprule
     File            & Column name                                                                                                  & Column description &  &  \\ \midrule
-    \multirow{4}{*}{sell\_prices.csv} & \texttt{store\_id}   & store ID                                                    \\
-                              & \texttt{item\_id}    & the product ID coded as in \Cref{tab:sales-desc}                           \\
-                              & \texttt{wm\_yr\_wk}  & code the week year from the dataset starting date           \\
-                              & \texttt{sell\_price} & selling price of each product, for each week, in each store
+    \multirow{4}{*}{sell\_prices.csv} & \texttt{store\_id}   & store ID.                                                    \\
+                              & \texttt{item\_id}    & The product ID coded as in \Cref{tab:sales-desc}         .                  \\
+                              & \texttt{wm\_yr\_wk}  & Code the week month and year from the dataset starting date.           \\
+                              & \texttt{sell\_price} & Selling price of each product, for each week, in each store.
     \\ \bottomrule
     \end{tabular}
     \end{table}
@@ -425,16 +459,16 @@ The top $5$ items that generate the most revenue are FOODS_3 items, and they are
     \item FOODS_3_586, sold in TX_3 with revenue $137892.80$.
 \end{itemize}
   
-\par\noindent\rule{\linewidth}{2px}
-\begin{itemize}
-    \item Working on the revenue data didn't give more insight than working on the sales data, so i am skipping those as the revenue points covered above are enough: \begin{enumerate}
-        \item total revenue of each category given the store
-        \item total revenue in each month
-        \item total revenue in each year
-        \item total revenue in each store
-    \end{enumerate}
-\end{itemize}
-
+% \par\noindent\rule{\linewidth}{2px}
+% \begin{itemize}
+%     \item Working on the revenue data didn't give more insight than working on the sales data, so i am skipping those as the revenue points covered above are enough: \begin{enumerate}
+%         \item total revenue of each category given the store
+%         \item total revenue in each month
+%         \item total revenue in each year
+%         \item total revenue in each store
+%     \end{enumerate}
+% \end{itemize}
+More details can be found in the \texttt{data_exploration.ipynb} notebook.
 \clearpage
 \section{Forecasting}
 

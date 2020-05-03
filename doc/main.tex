@@ -50,7 +50,13 @@
 Sales forecasting is an important application. Especially for business as it enables companies to make better, more informed decisions. This is best done with enough information about previous sales at hand, and using it to predict future revenue and growth.
 
 \subsection{Problem Definition}
-We are given Walmart sales data from ten stores in three different states. Our project can be divided into two main problems: the first is to answer business-related questions on the dataset (data analysis) and the second is to devise a machine learning model that can predict the sales of each item offered by the stores twenty eight days into the future. 
+We are given Walmart sales data from ten stores in three different states. Our project can be divided into two main problems: the first problem is to answer business-related questions on the dataset (data analysis), we consider some questions such as:
+\begin{enumerate}
+  \item Which department is the most important by sales? Which department is the least important?
+  \item Which feast days generate the most sales? Which feast days generate the least?
+  \item Which items are the most profitable by total revenue? Where are these sold?
+\end{enumerate}
+The second problem we tackle is to to predict sales twenty eight days into the future. We perform this on three levels: individual items, store, and category. We try three different models and report our results on them.
 
 This document is organized as follows: we review the dataset next, perform exploratory data analysis in the succeeding section, and outline our efforts at developing a forecasting model (and its evaluation) in the last section.
 
@@ -76,27 +82,7 @@ The dataset is divided into four files, each of which is described in \Cref{tab:
     \end{tabular}
 \end{table}
 
-The columns in each file are described in \Cref{tab:calendar-desc,tab:sales-desc,tab:prices-desc}.
-
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-% \begin{table}[]
-%     \centering
-%     \caption{calendar.csv columns description. Note that SNAP stands for 
-%     Supplemental Nutrition Assistance Program, a program to help provide food for low-income families in the United States of America.}
-%     \label{tab:calendar-desc}
-%     \begin{tabular}{@{}cc@{}}
-%     \toprule
-%     Column Name                                                       & Description                         \\ \midrule
-%     Date                                                              & The full date as a string.          \\
-%     wm_yr_wk                                                          & Week id.                            \\
-%     \begin{tabular}[c]{@{}c@{}}weekday/wday\\ month/year\end{tabular} & Date split up.                      \\
-%     event_name_1/2                                                    & Name of this event (if applicable). \\
-%     event_type_1/2                                                    & Type of the event (if applicable).  \\
-%     \begin{tabular}[c]{@{}c@{}}snap_CA\\ snap_TX\\ snap_WI\end{tabular} & \begin{tabular}[c]{@{}c@{}}Indicator of whether the stores allow\\ SNAP purchases.\end{tabular} \\ \bottomrule
-%     \end{tabular}
-% \end{table}
-
+The columns in each file are described in \Cref{tab:sales-desc,tab:prices-desc,tab:calender-desc}.
 
 
 \section{Exploratory Data Analysis}
@@ -104,7 +90,7 @@ In this section, we analyze and visualize the data from 3 files; calendar.csv, \
 
 \subsection{Calender-Focused Analysis}
 The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated annually (counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting events. With Religious events being the most frequent with 55 occurrence. We also have 10 SNAP days each month in each state. Columns descriptions are in \Cref{tab:calender-desc}.
-\begin{table}[H]
+\begin{table}
     \centering
     \caption{Calender details. SNAP stands for the Supplement Nutrition Assistance Program, which provides low income families and individuals with an Electronic Benefits Transfer debit card to purchase food products, this purchasing process is done monthly across 10 days.}
     \label{tab:calender-desc}
@@ -124,7 +110,7 @@ The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-cou
                     & \texttt{event\_type\_2}                                                                     & \begin{tabular}[c]{@{}l@{}}Type of the second event occurring in\\ that date, if one exists.\end{tabular} \\
                     & \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI} & \begin{tabular}[c]{@{}l@{}}Equals 1 if SNAP purchases are allowed on this \\ date.\end{tabular}  \\ \bottomrule
     \end{tabular}
-    \end{table}
+  \end{table}
 
 \subsection{Sales-Focused Analysis}
 The sales data covers $1913$ days only, from \textit{\date{January 29, 2011}} to \textit{\date{April 24, 2016}}, unlike the calender which covered $1969$ days. The data contains $30490$ rows and $1919$ columns, with sales data from 3 states; California (CA), Texas (TX) and Wisconsin (WI), with $4$, $3$, and $3$ stores in each respectively. It also contains $4$ categories of products; Hobbies, Household, Foods, with $2$, $2$, and $3$ departments respectively. Columns descriptions are in \Cref{tab:sales-desc}.
@@ -470,29 +456,132 @@ The top $5$ items that generate the most revenue are FOODS_3 items, and they are
 More details can be found in the \texttt{data_exploration.ipynb} notebook.
 \clearpage
 \section{Forecasting}
+All the results of this section can reproduced by running the \texttt{Forecasting.ipynb} notebook.
 
-
-\clearpage
-Interesting questions that our project should answer:
+\subsection{Description of Models Used}
+We use mainly three different models:
 \begin{enumerate}
-    \item Which department is the most important by sales? Which department is the least important?  \textcolor{red}{answered.}
-    \item Which items are commonly bought together in each store? What about which items are bought together in each state? \textcolor{red}{We can't answer this since we don't have individual shopping data.}
-    \item Which feast days generate the most sales? Which feast days generate the least? \textcolor{red}{answered.}
-    \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold? \textcolor{red}{answered.}
-    \item Can we predict the item sales accurately?
+  \item ARIMA models: studied in the course.
+  \item Exponential smoothing models: given an input time series $(x_{t})_{t=1}^{T}$ we set $y_0 = x_0$ and predict a forecasting sequence $(y_{t})_{t=1}^{T+k}$ by
+  \[ y_{t} = \alpha x_{t} + \br{1 - \alpha} y_{t-1},  \]
+  where $\alpha > 0$ is a smoothing parameter that can be estimated from the data.
+  \item Facebook Prophet: A toolkit from Facebook which does forecasting based on an additive noise model which tries to model yearly, weekly, and daily seasonality as non-linear additive noise. We turn off yearly seasonality for our experiments.
 \end{enumerate}
+
+\subsection{Item-Level Predictions}
+To come up with item-level predictions, we judged that the dataset is too large to use at once. We used random subsampling and chose a small subset of items (only $30$ items) to run experiments on, and created a train-test split. The training set contained $30$ items with $28 \times 4$ days of observation data for each. The test set contained item sales for twenty eight days after the last sold item. We calculated the root mean square error over all items for each model used over a forecast length of 28 days, and it is tabulated as \Cref{tab:rmse-item}, where we can see that both ARIMA and ExpSmoothing led to very similar performance and were better than Prophet.
+
+\begin{table}[]
+  \centering
+  \caption{Root Mean Square Error for item-level prediction by method.}
+  \label{tab:rmse-item}
+  \begin{tabular}{cc}
+  \hline
+  Model Used   & Root Mean Square Error \\ \hline
+  ARIMA        & $1.9555$               \\
+  ExpSmoothing & $1.9338$               \\
+  Prophet      & $2.0887$               \\ \hline
+  \end{tabular}
+  \end{table}
+
+To gain more insight into the difference between the methods, we plot the predicted time series for four randomly chosen items in \Cref{fig:arima-item-sales,fig:expsm-item-sales,fig:pro-item-sales}. We see that ARIMA and ExpSmoothing both seem to capture the general trend relatively well, while Prophet is too conservative and predicts too close to the mean.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{sarimax-items}
+  \caption{Item sales as predicted by ARIMA against the ground truth on four randomly chosen items.}
+  \label{fig:arima-item-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{exp-sm-items}
+  \caption{Item sales as predicted by ExpSmoothing against the ground truth on four randomly chosen items.}
+  \label{fig:expsm-item-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{prophet-items}
+  \caption{Item sales as predicted by Prophet against the ground truth on four randomly chosen items.}
+  \label{fig:pro-item-sales}
+\end{figure}
+
+\subsection{Category and State-Level Predictions}
+There are three main categories in this dataset: Foods, Hobbies, and Household items, and all items are sold in three states: California, Texas, and Wisconsin. We run forecasting by using the same three models from the previous section but this time we try to predict the volume of sells in each item category as well as in each state. As the number of item categories ($3$) and the number of states ($3$) is manageable, we were able to train using the entire history of observations for this task. The root mean squared errors are tabulated in \Cref{tab:rmse-category,tab:rmse-state}. Surprisingly, we see that Prophet performs best on this task, and this is because the quantity of data is too large for a single smoothing parameter to capture well (as in ExpSmoothing) and because Prophet models seasonality by a stronger model than ARIMA. Compared to the items (where we used only $28 \times 4$ days), here we use the entire history (about $1900$ days). We plot the time series predictions for the last 28 days of the training set and forecast 28 days into the future in \Cref{fig:arima-category-sales,fig:expsm-category-sales,fig:pro-category-sales} for categories and \Cref{fig:arima-state-sales,fig:expsm-state-sales,fig:pro-state-sales} for states. We observe that the closest fit is Prophet, followed by ARIMA and ExpSmooth.
+
+\begin{table}[]
+  \centering
+  \caption{Root Mean Square Error for category-level prediction by method.}
+  \label{tab:rmse-category}
+  \begin{tabular}{cc}
+  \hline
+  Model Used   & Root Mean Square Error \\ \hline
+  ARIMA        & $6.8457$               \\
+  ExpSmoothing & $7.0749$               \\
+  Prophet      & $6.4010$               \\ \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[]
+    \centering
+    \caption{Root Mean Square Error for state-level prediction by method.}
+    \label{tab:rmse-state}
+    \begin{tabular}{cc}
+    \hline
+    Model Used   & Root Mean Square Error \\ \hline
+    ARIMA        & $5.5871$               \\
+    ExpSmoothing & $5.9941$               \\
+    Prophet      & $5.4918$               \\ \hline
+    \end{tabular}
+  \end{table}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{sarimax-cat}
+  \caption{Item sales per category as predicted by ARIMA against the ground truth.}
+  \label{fig:arima-category-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{exp-sm-cat}
+  \caption{Item sales per category as predicted by ExpSmoothing against the ground truth.}
+  \label{fig:expsm-category-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{pro-cat}
+  \caption{Item sales per category as predicted by Prophet against the ground truth.}
+  \label{fig:pro-category-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{sarimax-state}
+  \caption{Item sales per state as predicted by ARIMA against the ground truth.}
+  \label{fig:arima-state-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{exp-sm-state}
+  \caption{Item sales per state as predicted by ExpSmoothing against the ground truth.}
+  \label{fig:expsm-state-sales}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{pro-state}
+  \caption{Item sales per state as predicted by Prophet against the ground truth.}
+  \label{fig:pro-state-sales}
+\end{figure}
+
+\subsection{Other approaches and future Work}
+We tried to implement prediction using recurrent neural networks, but it was too difficult and we could not get it working on time. We also did not use any ensembles, when eighty percent of the winning models from last year's competition (the M4 competition) were ensembles. In future work on time series forecasting (in this competition or otherwise), we will consider using ensembles.
 
 \bibliography{main}
 
 \end{document}
-
-\clearpage
-\section{Proposal}
-\ahmed{Will probably remove this later.}
-\subsection{Idea}
-We want to forecast the unit sales of different products sold by Walmart markets in the United States. More precisely, given hierarchical sales data from Walmart we will forecast daily sales for two subsequent 28-day time periods.
-
-\subsection{Planned Approach}
-We aim to use a mix of statistical features specific to time series data combined with neural networks. For deseasonalization we can use techniques like exponential smoothing or other statistical procedures on sliding windows. We hope to understand the seasonality patterns in the data first and then use a recurrent neural network to predict the trends.
-
-

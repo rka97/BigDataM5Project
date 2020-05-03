@@ -40,7 +40,7 @@
 
 \maketitle
 
-\abstract{This report gives a time series analysis of historical Walmart sales data about more than three thousand different products sold across three different states in the United States. The data is part of the M5 forecasting competition \citep{Makridakis2020} and in addition to the time series analysis we also propose and describe a forecasting system and analyze its prediction capabilities.}
+\abstract{This report gives a time series analysis of historical Walmart sales data about more than three thousand different products sold across three different states in the United States. The data is part of the M5 forecasting competition \citep{Makridakis2020}. In addition to the time series analysis we also describe our attempts at building forecasting systems on multiple levels and an analysis of its prediction.}
 
 \tableofcontents
 \clearpage
@@ -76,27 +76,26 @@ The dataset is divided into four files, each of which is described in \Cref{tab:
     \end{tabular}
 \end{table}
 
-The columns in each file are described in \Cref{tab:calender-desc}, \Cref{tab:sales-desc} and \Cref{tab:prices-desc}.
-The columns in each file are described in \Cref{tab:calendar-desc}.
+The columns in each file are described in \Cref{tab:calendar-desc,tab:sales-desc,tab:prices-desc}.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[]
-    \centering
-    \caption{calendar.csv columns description. Note that SNAP stands for 
-    Supplemental Nutrition Assistance Program, a program to help provide food for low-income families in the United States of America.}
-    \label{tab:calendar-desc}
-    \begin{tabular}{@{}cc@{}}
-    \toprule
-    Column Name                                                       & Description                         \\ \midrule
-    Date                                                              & The full date as a string.          \\
-    wm_yr_wk                                                          & Week id.                            \\
-    \begin{tabular}[c]{@{}c@{}}weekday/wday\\ month/year\end{tabular} & Date split up.                      \\
-    event_name_1/2                                                    & Name of this event (if applicable). \\
-    event_type_1/2                                                    & Type of the event (if applicable).  \\
-    \begin{tabular}[c]{@{}c@{}}snap_CA\\ snap_TX\\ snap_WI\end{tabular} & \begin{tabular}[c]{@{}c@{}}Indicator of whether the stores allow\\ SNAP purchases.\end{tabular} \\ \bottomrule
-    \end{tabular}
-\end{table}
+% \begin{table}[]
+%     \centering
+%     \caption{calendar.csv columns description. Note that SNAP stands for 
+%     Supplemental Nutrition Assistance Program, a program to help provide food for low-income families in the United States of America.}
+%     \label{tab:calendar-desc}
+%     \begin{tabular}{@{}cc@{}}
+%     \toprule
+%     Column Name                                                       & Description                         \\ \midrule
+%     Date                                                              & The full date as a string.          \\
+%     wm_yr_wk                                                          & Week id.                            \\
+%     \begin{tabular}[c]{@{}c@{}}weekday/wday\\ month/year\end{tabular} & Date split up.                      \\
+%     event_name_1/2                                                    & Name of this event (if applicable). \\
+%     event_type_1/2                                                    & Type of the event (if applicable).  \\
+%     \begin{tabular}[c]{@{}c@{}}snap_CA\\ snap_TX\\ snap_WI\end{tabular} & \begin{tabular}[c]{@{}c@{}}Indicator of whether the stores allow\\ SNAP purchases.\end{tabular} \\ \bottomrule
+%     \end{tabular}
+% \end{table}
 
 
 
@@ -107,8 +106,8 @@ In this section, we analyze and visualize the data from 3 files; calendar.csv, \
 The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-count up to 1969. The dataset contains 30 events, some of them are repeated annually(counting duplicates, there are 167 events). They are divided into: Cultural, National, Religious and Sporting events. With Religious events being the most frequent with 55 occurrence. We also have 10 SNAP days each month in each state. Columns descriptions are in \Cref{tab:calender-desc}.
 \begin{table}[H]
     \centering
-    \caption{Calender details}
-    \label{tab:calender-desc1}
+    \caption{Calender details. SNAP stands for the Supplement Nutrition Assistance Program, which provides low income families and individuals with an Electronic Benefits Transfer debit card to purchase food products, this purchasing process is done monthly across 10 days.}
+    \label{tab:calender-desc}
     \begin{tabular}{@{}lllll@{}}
     \toprule
     File            & Column name                                                                                                  & Column description &  &  \\ \midrule
@@ -123,7 +122,7 @@ The data starts at \date{January 29, 2011} to \date{June 19, 2016}, with day-cou
                     & \texttt{event\_type\_1}                                                                     & \begin{tabular}[c]{@{}l@{}}Type of the event occurring in this day,\\ if one exists.\end{tabular}         \\
                     & \texttt{event\_name\_2}                                                                     & \begin{tabular}[c]{@{}l@{}}Name of the second event occurring in\\ that date,if one exists.\end{tabular}  \\
                     & \texttt{event\_type\_2}                                                                     & \begin{tabular}[c]{@{}l@{}}Type of the second event occurring in\\ that date, if one exists.\end{tabular} \\
-                    & \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI} & \begin{tabular}[c]{@{}l@{}}Equals 1 if SNAP\footnote{The Supplement Nutrition      Assistance Program (SNAP) provides low income families and individuals with an Electronic Benefits Transfer      debit card to purchase food products, this purchasing process is done monthly across 10 days} purchases are allowed on this \\ date.\end{tabular}  \\ \bottomrule
+                    & \texttt{snap\_CA}, \texttt{snap\_TX}, \texttt{snap\_WI} & \begin{tabular}[c]{@{}l@{}}Equals 1 if SNAP purchases are allowed on this \\ date.\end{tabular}  \\ \bottomrule
     \end{tabular}
     \end{table}
 
@@ -448,6 +447,8 @@ Interesting questions that our project should answer:
     \item Which items are the most profitable (i.e. best revenue*nsales)? Where are these sold? \textcolor{red}{answered.}
     \item Can we predict the item sales accurately?
 \end{enumerate}
+
+\bibliography{main}
 
 \end{document}
 
